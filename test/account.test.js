@@ -50,7 +50,12 @@ describe("BankAccount", function () {
 
     it("should throw error given a negative amount", function () {
       expect(() => account.deposit(-10))
-        .throw(RangeError, "Deposit amount can't be negative")
+        .throw(RangeError, "Deposit amount can't be negative or zero")
+    })
+
+    it("should throw error given a zero amount", function () {
+      expect(() => account.deposit(0))
+        .throw(RangeError, "Deposit amount can't be negative or zero")
     })
   })
 
@@ -74,7 +79,12 @@ describe("BankAccount", function () {
 
     it("should throw error given a negative amount", function () {
       expect(() => account.withdraw(-10))
-        .throw(RangeError, "Withdraw amount can't be negative")
+        .throw(RangeError, "Withdraw amount can't be negative or zero")
+    })
+
+    it("should throw error given a zero amount", function () {
+      expect(() => account.withdraw(0))
+        .throw(RangeError, "Withdraw amount can't be negative or zero")
     })
 
     it("should throw error given the withdraw amount more than balance", function () {
@@ -102,7 +112,7 @@ describe("BankAccount", function () {
 
     it("should throw error given a negative amount", function () {
       expect(() => account.transfer(otherAccount, -5))
-        .throw(RangeError, "Withdraw amount can't be negative")
+        .throw(RangeError, "Withdraw amount can't be negative or zero")
     })
 
     it("should throw error given the transfer amount more than balance", function () {
