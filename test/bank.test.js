@@ -89,12 +89,12 @@ describe("#deposit()", function () {
 
   it("should throw error given a negative amount", function () {
     expect(() => deposit(accountId, -10))
-      .throw(RangeError, "Deposit amount can't be negative or zero")
+      .throw("Deposit amount can't be negative or zero")
   })
 
   it("should throw error given a zero amount", function () {
     expect(() => deposit(accountId, 0))
-      .throw(RangeError, "Deposit amount can't be negative or zero")
+      .throw("Deposit amount can't be negative or zero")
   })
 })
 
@@ -124,17 +124,17 @@ describe("#withdraw()", function () {
 
   it("should throw error given a negative amount", function () {
     expect(() => withdraw(accountId, -1))
-      .throw(RangeError, "Withdraw amount can't be negative or zero")
+      .throw("Withdraw amount can't be negative or zero")
   })
 
   it("should throw error given a zero amount", function () {
     expect(() => withdraw(accountId, 0))
-      .throw(RangeError, "Withdraw amount can't be negative or zero")
+      .throw("Withdraw amount can't be negative or zero")
   })
 
   it("should throw error given the withdraw amount more than balance", function () {
     expect(() => withdraw(accountId, INIT_BALANCE + 1))
-      .throw(RangeError, "Withdraw amount can't be more than balance")
+      .throw("Withdraw amount can't be more than balance")
   })
 })
 
@@ -174,12 +174,17 @@ describe("#transfer()", function () {
 
   it("should throw error given a negative amount", function () {
     expect(() => transfer(fromAccountId, toAccountId, -5))
-      .throw(RangeError, "Transfer amount can't be negative or zero")
+      .throw("Transfer amount can't be negative or zero")
   })
 
   it("should throw error given the transfer amount more than balance", function () {
     expect(() => transfer(fromAccountId, toAccountId, INIT_BALANCE + 1))
-      .throw(RangeError, "Transfer amount can't be more than balance")
+      .throw("Transfer amount can't be more than balance")
+  })
+
+  it("should throw error given fromAccountId equals to toAccountId", function () {
+    expect(() => transfer(fromAccountId, fromAccountId, 1))
+      .throw("Can't transfer money to the same account")
   })
 })
 
