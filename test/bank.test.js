@@ -1,4 +1,7 @@
 const sinon = require("sinon");
+const expect = require('chai').expect
+const crypto = require('crypto')
+
 const {
   createAccount,
   findAccountById,
@@ -7,8 +10,6 @@ const {
   withdraw,
   transfer
 } = require("../lib/bank");
-const expect = require('chai').expect
-const crypto = require('crypto')
 
 beforeEach(function () {
   sinon.replace(Date, "now", sinon.fake(Date.now));
