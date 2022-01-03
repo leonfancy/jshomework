@@ -1,4 +1,4 @@
-const sinon = require("sinon");
+const sinon = require("sinon")
 const expect = require('chai').expect
 const crypto = require('crypto')
 
@@ -9,20 +9,20 @@ const {
   findAllTransactionsByAccountId,
   withdraw,
   transfer
-} = require("../lib/bank");
+} = require("../lib/bank")
 
 beforeEach(function () {
-  sinon.replace(Date, "now", sinon.fake(Date.now));
-  sinon.replace(crypto, "randomUUID", sinon.fake(crypto.randomUUID));
-});
+  sinon.replace(Date, "now", sinon.fake(Date.now))
+  sinon.replace(crypto, "randomUUID", sinon.fake(crypto.randomUUID))
+})
 
 afterEach(function () {
   sinon.restore()
-});
+})
 
 describe("#createAccount()", function () {
   it("should create a banking account with valid initial balance and name", function () {
-    let account = createAccount("Bob", 0);
+    let account = createAccount("Bob", 0)
 
     expect(account.id).to.equal(crypto.randomUUID.returnValues[0])
     expect(account.name).to.equal("Bob")
@@ -30,7 +30,7 @@ describe("#createAccount()", function () {
   })
 
   it("should trim the account name", function () {
-    let account = createAccount(" Bob\n", 0);
+    let account = createAccount(" Bob\n", 0)
 
     expect(account.name).to.equal("Bob")
   })
@@ -49,12 +49,12 @@ describe("#createAccount()", function () {
 })
 
 describe("#findAccountById()", function () {
-  it("should find the correct account by id in db", function () {
-    createAccount("Alice", 0);
-    let accountBob = createAccount("Bob", 0);
-    createAccount("Lisa", 0);
+  it("should find the created account by id in db", function () {
+    createAccount("Alice", 0)
+    let accountBob = createAccount("Bob", 0)
+    createAccount("Lisa", 0)
 
-    let foundAccount = findAccountById(accountBob.id);
+    let foundAccount = findAccountById(accountBob.id)
 
     expect(foundAccount).to.deep.equal(accountBob)
   })
@@ -66,19 +66,19 @@ describe("#findAccountById()", function () {
 })
 
 describe("#deposit()", function () {
-  const INIT_BALANCE = 20;
-  let accountId;
+  const INIT_BALANCE = 20
+  let accountId
 
   beforeEach(function () {
-    let account = createAccount("Bob", INIT_BALANCE);
+    let account = createAccount("Bob", INIT_BALANCE)
     accountId = account.id
-  });
+  })
 
   it("should increment balance by given amount and save transaction history", function () {
     deposit(accountId, 10)
 
-    let account = findAccountById(accountId);
-    let accountTransactions = findAllTransactionsByAccountId(accountId);
+    let account = findAccountById(accountId)
+    let accountTransactions = findAllTransactionsByAccountId(accountId)
     expect(account.balance).to.equal(INIT_BALANCE + 10)
     expect(accountTransactions).to.deep.equal([{
       timestamp: Date.now.returnValues[0],
@@ -100,20 +100,20 @@ describe("#deposit()", function () {
 })
 
 describe("#withdraw()", function () {
-  const INIT_BALANCE = 20;
-  let accountId;
+  const INIT_BALANCE = 20
+  let accountId
 
   beforeEach(function () {
-    let account = createAccount("Bob", INIT_BALANCE);
+    let account = createAccount("Bob", INIT_BALANCE)
     accountId = account.id
-  });
+  })
 
   it("should decrement balance by given amount and save transaction history", function () {
 
     withdraw(accountId, 5)
 
-    let account = findAccountById(accountId);
-    let accountTransactions = findAllTransactionsByAccountId(accountId);
+    let account = findAccountById(accountId)
+    let accountTransactions = findAllTransactionsByAccountId(accountId)
     expect(account.balance).to.equal(INIT_BALANCE - 5)
     expect(accountTransactions).to.deep.equal([{
       timestamp: Date.now.returnValues[0],
@@ -140,22 +140,22 @@ describe("#withdraw()", function () {
 })
 
 describe("#transfer()", function () {
-  const INIT_BALANCE = 20;
-  let fromAccountId;
-  let toAccountId;
+  const INIT_BALANCE = 20
+  let fromAccountId
+  let toAccountId
 
   beforeEach(function () {
     fromAccountId = createAccount("Bob", INIT_BALANCE).id
     toAccountId = createAccount("Alice", INIT_BALANCE).id
-  });
+  })
 
   it("should transfer money to another bank account and save transaction history", function () {
     transfer(fromAccountId, toAccountId, 5)
 
-    let fromAccount = findAccountById(fromAccountId);
-    let toAccount = findAccountById(toAccountId);
-    let fromAccountTransactions = findAllTransactionsByAccountId(fromAccountId);
-    let toAccountTransactions = findAllTransactionsByAccountId(toAccountId);
+    let fromAccount = findAccountById(fromAccountId)
+    let toAccount = findAccountById(toAccountId)
+    let fromAccountTransactions = findAllTransactionsByAccountId(fromAccountId)
+    let toAccountTransactions = findAllTransactionsByAccountId(toAccountId)
 
     expect(fromAccount.balance).to.equal(INIT_BALANCE - 5)
     expect(toAccount.balance).to.equal(INIT_BALANCE + 5)
@@ -190,16 +190,16 @@ describe("#transfer()", function () {
 })
 
 describe("#findAllTransactionsByAccountId()", function () {
-  let bobAccountId;
-  let aliceAccountId;
+  let bobAccountId
+  let aliceAccountId
 
   beforeEach(function () {
     bobAccountId = createAccount("Bob", 0).id
     aliceAccountId = createAccount("Alice", 0).id
-  });
+  })
 
   it("should return empty array if no transactions", function () {
-    let bobTransactions = findAllTransactionsByAccountId(bobAccountId);
+    let bobTransactions = findAllTransactionsByAccountId(bobAccountId)
     expect(bobTransactions).to.be.an('array').that.is.empty
   })
 
@@ -209,8 +209,8 @@ describe("#findAllTransactionsByAccountId()", function () {
     withdraw(bobAccountId, 5)
     transfer(aliceAccountId, bobAccountId, 5)
 
-    let bobTransactions = findAllTransactionsByAccountId(bobAccountId);
-    let aliceTransactions = findAllTransactionsByAccountId(aliceAccountId);
+    let bobTransactions = findAllTransactionsByAccountId(bobAccountId)
+    let aliceTransactions = findAllTransactionsByAccountId(aliceAccountId)
 
     expect(bobTransactions).to.deep.equal([
       {
