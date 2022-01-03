@@ -97,6 +97,11 @@ describe("#deposit()", function () {
     expect(() => deposit(accountId, 0))
       .throw("Deposit amount can't be negative or zero")
   })
+
+  it("should throw error if account not found", function () {
+    expect(() => deposit("account-id-not-exist", 10))
+      .throw("Account not found")
+  })
 })
 
 describe("#withdraw()", function () {
@@ -136,6 +141,11 @@ describe("#withdraw()", function () {
   it("should throw error given the withdraw amount more than balance", function () {
     expect(() => withdraw(accountId, INIT_BALANCE + 1))
       .throw("Withdraw amount can't be more than balance")
+  })
+
+  it("should throw error if account not found", function () {
+    expect(() => withdraw("account-id-not-exist", 10))
+      .throw("Account not found")
   })
 })
 
@@ -186,6 +196,14 @@ describe("#transfer()", function () {
   it("should throw error given fromAccountId equals to toAccountId", function () {
     expect(() => transfer(fromAccountId, fromAccountId, 1))
       .throw("Can't transfer money to the same account")
+  })
+
+  it("should throw error if account not found", function () {
+    expect(() => transfer("account-id-not-exist", toAccountId, 10))
+      .throw("Account not found")
+
+    expect(() => transfer(fromAccountId, "account-id-not-exist", 10))
+      .throw("Account not found")
   })
 })
 
